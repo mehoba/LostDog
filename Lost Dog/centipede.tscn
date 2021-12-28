@@ -1,0 +1,127 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://centipede/Centipede_walk.png" type="Texture" id=1]
+[ext_resource path="res://centipede.gd" type="Script" id=2]
+[ext_resource path="res://centipede/Centipede_death.png" type="Texture" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 72, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 144, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 3 )
+region = Rect2( 216, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 72, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 72, 72 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 216, 0, 72, 72 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "attack",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": false,
+"name": "death",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 17.2972, 6.43822 )
+
+[sub_resource type="CircleShape2D" id=11]
+radius = 5.5055
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 5.79307, 4.63594 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 10.7428, 3.04496 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 3.67176, 10.54 )
+
+[node name="centipede" type="KinematicBody2D"]
+position = Vector2( -0.176773, 0 )
+collision_layer = 16
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.184047, -0.132144 )
+scale = Vector2( 0.785197, 0.684687 )
+frames = SubResource( 9 )
+animation = "walk"
+frame = 3
+playing = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 9.17875, 17.889 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( -0.878311, 6.50176 )
+shape = SubResource( 11 )
+
+[node name="floor_checker" type="RayCast2D" parent="."]
+position = Vector2( 9.54594, 17.8544 )
+enabled = true
+cast_to = Vector2( 0, 30 )
+
+[node name="top_checker" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top_checker"]
+position = Vector2( -0.883873, 6.36395 )
+shape = SubResource( 12 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="top_checker"]
+position = Vector2( 14.3189, 14.1421 )
+shape = SubResource( 13 )
+
+[node name="side_checker" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="side_checker"]
+position = Vector2( -5.40923, 13.1539 )
+shape = SubResource( 14 )
+[connection signal="body_entered" from="top_checker" to="." method="_on_top_checker_body_entered"]
+[connection signal="body_entered" from="side_checker" to="." method="_on_side_checker_body_entered"]
